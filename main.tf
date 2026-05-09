@@ -61,10 +61,19 @@ resource "kubectl_manifest" "chatapp" {
   depends_on = [ kubectl_manifest.first-deployment ]
 }
 
+resource "helm_release" "ingress_nginx" {
+  name       = "ingress-nginx"
+  repository = "https://kubernetes.github.io/ingress-nginx"
+  chart      = "ingress-nginx"
+  namespace  = "ingress-nginx"
+
+  create_namespace = true
+}
+
 resource "kubectl_manifest" "ingress" {
   for_each = fileset("${path.module}/chatapp-gitops/ingress", "*.yml")
 
   yaml_body = file("${path.module}/chatapp-gitops/ingress/${each.value}")
 
-  depends_on = [ kubectl_manifest.chatapp ]
+  depends_on = [ helm_release.ingress_nginx ]
 }

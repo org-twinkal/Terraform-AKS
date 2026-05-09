@@ -28,10 +28,10 @@ resource "azurerm_kubernetes_cluster" "aks" {
   tags = local.tags
 }
 
-resource "kubectl_manifest" "namespace" {
-  for_each = fileset("${path.module}/k8s-manifests/namespace", "*.yml")
+resource "kubectl_manifest" "first-deployment" {
+  for_each = fileset("${path.module}/k8s-manifests/first-deploy", "*.yml")
 
-  yaml_body = file("${path.module}/k8s-manifests/namespace/${each.value}")
+  yaml_body = file("${path.module}/k8s-manifests/first-deploy/${each.value}")
 
   depends_on = [ azurerm_kubernetes_cluster.aks ]
 }
@@ -46,9 +46,9 @@ resource "helm_release" "argocd" {
 }
 
 resource "kubectl_manifest" "chatapp" {
-  for_each = fileset("${path.module}/k8s-manifests/argocd", "*.yml")
+  for_each = fileset("${path.module}/k8s-manifests/argocd/root-app", "*.yml")
 
-  yaml_body = file("${path.module}/k8s-manifests/argocd/${each.value}")
+  yaml_body = file("${path.module}/k8s-manifests/argocd/root-app/${each.value}")
 
   depends_on = [ helm_release.argocd ]
 }

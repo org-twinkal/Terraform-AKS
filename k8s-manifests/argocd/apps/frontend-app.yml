@@ -1,14 +1,14 @@
 kind: Application
 apiVersion: argoproj.io/v1alpha1
 metadata:
-  name: chat-app
+  name: Frontend
   namespace: argocd
 spec:
   project: default
   source:
-    repoURL: https://github.com/org-twinkal/Fullstack-chat-app.git
+    repoURL: https://github.com/org-twinkal/Terraform-AKS.git
     targetRevision: main
-    path: chatapp-gitops
+    path: chatapp-gitops/chatapp-frontend
 
   destination:
     server: https://twinkalaks-3kan2abl.hcp.eastus.azmk8s.io:443

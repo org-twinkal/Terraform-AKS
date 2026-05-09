@@ -1,7 +1,7 @@
 kind: Application
 apiVersion: argoproj.io/v1alpha1
 metadata:
-  name: Mongodb
+  name: mongodb
   namespace: argocd
 spec:
   project: default
@@ -12,7 +12,7 @@ spec:
 
   destination:
     server: https://twinkalaks-3kan2abl.hcp.eastus.azmk8s.io:443
-    namespace: chatapp
+    namespace: default
   
   syncPolicy:
     automated:

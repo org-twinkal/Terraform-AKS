@@ -75,5 +75,13 @@ resource "kubectl_manifest" "ingress" {
 
   yaml_body = file("${path.module}/chatapp-gitops/ingress/${each.value}")
 
-  depends_on = [ helm_release.ingress_nginx ]
+  depends_on = [ kubectl_manifest.chatapp ]
+}
+
+resource "kubectl_manifest" "ingress-argocd" {
+  for_each = fileset("${path.module}/k8s-manifests/argocd/Ingress", "*.yml")
+
+  yaml_body = file("${path.module}/k8s-manifests/argocd/Ingress/${each.value}")
+
+  depends_on = [ kubectl_manifest.ingress ]
 }
